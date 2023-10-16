@@ -1,0 +1,23 @@
+name: Math Utility Repo applying CI  #name: là tương đương Cốnle.log ghi lại nhật kí chạy trong các lệnh
+
+on:
+  push:
+    branches: [ "main" ] # Bất kì ai push code lên nhánh main, kho code chính 
+  pull_request:
+    branches: [ "main" ]
+
+jobs:                      # thì làm các lệnh ở dưới đây
+  build:                   # build app -> file .jar .war bằng cách
+
+    runs-on: ubuntu-latest    #1: Mượn server bên Mỹ, cài sẵn giùm OS Ubuntu
+
+    steps:
+    - uses: actions/checkout@v3 #2: Có server rồi, downnload code từ GH về server này
+    - name: Set up JDK 21       #3: Mượn cái JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'      #4: khai báo version JDK ứng với file pom.xml
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven - Tao file . jar . war     #5: Mượn Maven, chạy lệnh đóng gói, test luôn 
+      run: mvn -B package --file pom.xml
